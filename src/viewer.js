@@ -4,10 +4,11 @@ import { T, v, group } from './geometry.js';
 import { engine } from './models/engine.js';
 import { earth } from './models/earth.js';
 import { telephone } from './models/telephone.js';
+import { cells } from './models/cells.js';
 import { SoftwareRenderer } from './software-renderer.js';
 import { createPanLimit } from './camera-pan.js';
 
-const models = { engine, earth, telephone };
+const models = { engine, earth, telephone, cells };
 
 export async function prepareViewerModel(id) {
   if (id === 'body' && !models.body) {
@@ -94,11 +95,13 @@ function frameObject(object, camera, direction, margin) {
 }
 
 function hitPart(object, root) {
+  let part;
   while (object && object !== root) {
-    if (object.userData.part) return object;
+    if (!object.visible) return null;
+    if (!part && object.userData.part) part = object;
     object = object.parent;
   }
-  return null;
+  return part ?? null;
 }
 
 export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay }) {
@@ -120,6 +123,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
 
   let activeObject = root;
   let isolated;
+  let pickingEnabled = true;
   let playing = autoPlay;
   let time = 0;
   let lastStage = -1;
@@ -329,7 +333,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     canvas.style.cursor = activePointers.size ? 'grabbing' : (pick(event) ? 'pointer' : 'grab');
   }
   function pick(event) {
-    if (transition) return null;
+    if (transition || !pickingEnabled) return null;
     const rect = canvas.getBoundingClientRect();
     const normalized = new T.Vector2((event.clientX - rect.left) * 2 / rect.width - 1, 1 - (event.clientY - rect.top) * 2 / rect.height);
     raycaster.setFromCamera(normalized, camera);
@@ -431,6 +435,17 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     isolate,
     showAssembly,
     setPlaying(value) { playing = value; },
+    setModelView(view, reframe) {
+      if (transition) finishTransition();
+      model.setView(view);
+      pickingEnabled = !view.challenge;
+      if (reframe) fit();
+      else {
+        panLimit = createPanLimit(activeObject);
+        panLimit(camera, controls.target);
+        needsRender = true;
+      }
+    },
     setPanMode(enabled) {
       controls.mouseButtons.LEFT = enabled ? T.MOUSE.PAN : T.MOUSE.ROTATE;
       controls.touches.ONE = enabled ? T.TOUCH.PAN : T.TOUCH.ROTATE;

@@ -220,6 +220,86 @@
       "durationSeconds": 16.107,
       "transcriptSha256": "dd421221d43aacb96654b6eb0d0df3b848f20b0a26c5883d7676314201cb16a2",
       "audioSha256": "7636dc9d2dd744925149079f7064db242d7406aef74b66e16ab198b63804e625"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "assembly",
+      "src": "audio/cells/assembly-heart-v1.m4a",
+      "durationSeconds": 23.723,
+      "transcriptSha256": "aa0d17818020f2a10c150671e42b44450ca81537b4c70c95e9deba0a70ac53e5",
+      "audioSha256": "f7b43cc8d3fe8728ebe16218737089df5e59305c938da92aa246bfa8d6207cb5"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "nucleus",
+      "src": "audio/cells/nucleus-heart-v1.m4a",
+      "durationSeconds": 14.08,
+      "transcriptSha256": "de02afcfdcb64054c834f1d6af45e6988e99350adaa8d790035ff72307e97391",
+      "audioSha256": "b99e0ec9490289da61f2014528b90bc3c131b8ea9aae30555c515afee2e6edb6"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "membrane",
+      "src": "audio/cells/membrane-heart-v1.m4a",
+      "durationSeconds": 13.824,
+      "transcriptSha256": "b636dc821bdefdda1590a943de71ef782ae0d6dceee0eeae83e5bd214f9e3e25",
+      "audioSha256": "c3213768a6e826c3d3960023daf167a6e9211b89745226a61ebe10ba9a567cec"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "cytoplasm",
+      "src": "audio/cells/cytoplasm-heart-v1.m4a",
+      "durationSeconds": 13.76,
+      "transcriptSha256": "71023261a700ad23c4a90dc00653904ef5fc4d4e7c873ecff83cabcd7f68dc25",
+      "audioSha256": "9a658b1d2c7bd35df5c4d3a16219e558cdff7698148affa4c408c9b71f7777c5"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "mitochondria",
+      "src": "audio/cells/mitochondria-heart-v1.m4a",
+      "durationSeconds": 13.205,
+      "transcriptSha256": "e2fb36741c3bd8e021df115b5db33fd6ba6265aa1070e000c937d40d78af8047",
+      "audioSha256": "e196700aaae21b1d1282b3ffbee186da58b0282a072b2d73b6e547664cddf629"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "er",
+      "src": "audio/cells/er-heart-v1.m4a",
+      "durationSeconds": 16.469,
+      "transcriptSha256": "35ea11d610c215bd86481a12cdf42fd4d3ebb6e615fd4342a909c89a5ba818ca",
+      "audioSha256": "b3b3617fcf4d7b69bd66bc9b615bda0e0d254a087813b7f73eee26afc375755a"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "wall",
+      "src": "audio/cells/wall-heart-v1.m4a",
+      "durationSeconds": 12.949,
+      "transcriptSha256": "e5eeac09ca89fcb9c032213d55f8cbf4d6c2ed95a579f361cb9a988b77cc3055",
+      "audioSha256": "0adfb4a83ede2e16d0d30712d4a89710e673250450275634ed9a6b697598a102"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "chloroplasts",
+      "src": "audio/cells/chloroplasts-heart-v1.m4a",
+      "durationSeconds": 16.917,
+      "transcriptSha256": "09d867dee1bc2c3872e6b53a8634ddd08e841d1652668c934aed51e554e29e93",
+      "audioSha256": "932c3c07da683c690f65ecefcf6c2785fb829abcf4a6e5366044137d1fefa689"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "vacuole",
+      "src": "audio/cells/vacuole-heart-v1.m4a",
+      "durationSeconds": 13.163,
+      "transcriptSha256": "6adddf4e0864aab64ebdcd23083bdf18571bbbea54f16499c22f509769441ff9",
+      "audioSha256": "67ba65f482c9e588aa770083ce557452f0c168054b260349dab462ac07a5a6fb"
+    },
+    {
+      "lessonId": "cells",
+      "contextId": "lysosomes",
+      "src": "audio/cells/lysosomes-heart-v1.m4a",
+      "durationSeconds": 15.616,
+      "transcriptSha256": "69b763f16615c454bd88b82d8b55cd78a9ee4d197582104347886830ac59168a",
+      "audioSha256": "fbcfb6b7daedcc0b64196af04a7087063933fc6d01883f94bf5f82f978655a70"
     }
   ]
 }

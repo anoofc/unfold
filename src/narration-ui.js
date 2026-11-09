@@ -42,7 +42,7 @@ export function mountNarration(host, player) {
     transcriptText.textContent = state.clip?.transcript ?? '';
     const messages = {
       idle: '', ready: 'Press Play or Replay to listen.', loading: 'Opening narration…',
-      playing: 'Narration is playing. Animation has its own controls.', paused: 'Narration paused. Press Play to continue.',
+      playing: 'Narration is playing.', paused: 'Narration paused. Press Play to continue.',
       ended: 'That’s the end. Press Replay to listen again.', silent: 'Audio is off. Choose Unmute whenever you want to listen.',
       blocked: 'Press Play to start the audio. You can keep exploring.',
       error: 'The audio couldn’t play. You can read the transcript or try Replay.',

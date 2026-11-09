@@ -277,7 +277,7 @@ function m4aDuration(buffer, start = 0, end = buffer.length) {
   throw new Error('MP4 duration not found');
 }
 
-test('all four lessons and every selectable part have local neural narration in the requested duration ranges', () => {
+test('all lessons and every selectable part have local neural narration in the requested duration ranges', () => {
   assert.deepEqual(Object.keys(narrationClips), lessons.map(lesson => lesson.id));
   const files = [];
   for (const lesson of lessons) {
@@ -295,10 +295,9 @@ test('all four lessons and every selectable part have local neural narration in 
       assert(duration >= clip.durationRange[0] && duration <= clip.durationRange[1], `${lesson.id}/${id}: ${duration}s`);
     }
   }
-  assert.equal(files.length, 26);
-  assert.equal(new Set(files).size, 26);
+  assert.equal(new Set(files).size, files.length);
   const installed = readdirSync(new URL('../public/audio/', import.meta.url), { recursive: true }).filter(file => file.endsWith('.m4a'));
-  assert.equal(installed.length, 26, 'old system-voice recordings must be removed');
+  assert.equal(installed.length, files.length, 'only the current narration recordings should be installed');
 });
 
 test('the generation manifest matches the scripts, recordings and shared neural voice', () => {
@@ -307,7 +306,7 @@ test('the generation manifest matches the scripts, recordings and shared neural 
   assert.deepEqual(manifest.voice, narrationVoice);
   assert.equal(manifest.generator, 'hyperframes@0.9.26');
   assert.equal(manifest.voice.id, 'af_heart');
-  assert.equal(manifest.clips.length, 26);
+  assert.equal(manifest.clips.length, lessons.reduce((count, lesson) => count + 1 + lesson.parts.length, 0));
   const seen = new Set();
   for (const recorded of manifest.clips) {
     const key = `${recorded.lessonId}/${recorded.contextId}`;
@@ -360,10 +359,12 @@ test('rapid cross-lesson selections leave only the latest narration active', asy
     pending.reject(Object.assign(new Error('source replaced'), { name: 'AbortError' }));
   }
   await settle();
-  assert.equal(player.getState().lessonId, 'body');
-  assert.equal(player.getState().contextId, 'vessels');
+  const lastLesson = lessons.at(-1);
+  const [lastPart] = lastLesson.parts.at(-1);
+  assert.equal(player.getState().lessonId, lastLesson.id);
+  assert.equal(player.getState().contextId, lastPart);
   assert.equal(player.getState().status, 'playing');
-  assert.equal(audio.src, `/${narrationClips.body.vessels.src}`);
+  assert.equal(audio.src, `/${narrationClips[lastLesson.id][lastPart].src}`);
   player.leave();
   assert.equal(audio.paused, true);
 });

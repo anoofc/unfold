@@ -1,6 +1,6 @@
 # Unfold.
 
-Unfold is a 3D science lab for kids. The four sample lessons cover a four-stroke, four-cylinder engine, Earth's layers, an early Bell telephone and the human body.
+Unfold is a 3D science lab for kids. The sample lessons cover a four-stroke, four-cylinder engine, Earth's layers, an early Bell telephone, the human body, and a comparison of plant and animal cells.
 
 ## Run in VS Code
 
@@ -18,9 +18,10 @@ Open the local URL printed by Vite. Run `npm run build` for a production build o
 - Click or tap a visible part or choose its name. The viewer frames that part on its own.
 - Drag to orbit and use the mouse wheel or pinch to zoom. Pan with right-drag, two-finger drag, or the **Pan mode** button and a regular drag. On the focused canvas, use the arrow keys to orbit, Shift with an arrow key to pan, and plus or minus to zoom. **Reset view** restores the centered view.
 - Tap empty space or use **Back to assembly** to return. Escape works in the normal page view.
-- Use **Play animation** or **Pause animation** to control the assembly. The default respects the system’s reduced-motion setting.
+- Use **Play animation** or **Pause animation** in lessons with an animation. The default respects the system’s reduced-motion setting.
+- In the cell comparison, select a shared structure to see it in both cells. Use **Peel back wall** to expose the leaf cell’s membrane, then try **Start challenge** to identify a cell from two structural clues.
 - In any lesson, choose **Start with audio** or **Explore silently**. The choice is saved on this browser. **Mute / Unmute** changes it at any time. Narration has its own **Play / Pause** and **Replay** controls, separate from animation.
-- Every lesson overview and all 22 selectable parts have narration and matching transcripts. Returning to the assembly stops narration; press **Replay** to hear the overview again. The matching transcript remains available without audio.
+- Every lesson overview and selectable part has narration and a matching transcript. Returning to the assembly stops narration. Press **Replay** to hear the overview again. The matching transcript remains available without audio.
 
 ## Project layout
 
@@ -35,7 +36,7 @@ The geometry is simplified for the sample lessons. The Earth cutaway exaggerates
 
 ## Neural narration
 
-All four lesson overviews and all 22 selectable parts have separate local recordings. The 26 clips use **Kokoro Heart**, an English neural voice with consistent pacing, replacing the original macOS system voice. Audio is generated before deployment and stored under `public/audio/`; playback does not need Python, a model download, a voice service or an API key.
+Each lesson overview and selectable part has a local recording in the **Kokoro Heart** English voice. Audio is generated before deployment and stored under `public/audio/`. Playback runs entirely in the browser.
 
 The existing audio choice, Play/Pause, Replay and Mute/Unmute controls apply to every lesson. Returning to the assembly stops narration and leaves its overview ready for Replay. Narration and animation remain independent.
 

@@ -2,6 +2,7 @@ import './style.css';
 import { lessons } from './lessons.js';
 import { createNarrationPlayer } from './narration.js';
 import { mountNarration } from './narration-ui.js';
+import { cellChallenge, gradeCellChallenge } from './cell-challenge.js';
 
 const icons = {
   star: '<path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/>',
@@ -23,6 +24,7 @@ const icons = {
   earth: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 6-5 12 0 18 5-6 5-12 0-18Z"/>',
   telephone: '<path d="M3 10c4-5 14-5 18 0v4h-5l-1-3H9l-1 3H3v-4Zm4 8h10"/>',
   body: '<path d="M12 20 4 12a4.7 4.7 0 0 1 8-5 4.7 4.7 0 0 1 8 5l-8 8Z"/><path d="M5 12h4l2-3 2 5 2-2h4"/>',
+  cells: '<rect x="2" y="6" width="9" height="12" rx="2"/><circle cx="6.5" cy="12" r="1.5"/><ellipse cx="17.5" cy="12" rx="4.5" ry="5"/><circle cx="17.5" cy="12" r="1.5"/>',
 };
 const icon = (name, size = 20) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${icons[name]}</svg>`;
 const app = document.querySelector('#app');
@@ -30,6 +32,7 @@ const base = import.meta.env.BASE_URL;
 const narration = createNarrationPlayer({ baseUrl: base });
 let unmountNarration;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const lastLessonNumber = lessons.at(-1).number;
 let viewer;
 let routeVersion = 0;
 
@@ -122,7 +125,7 @@ function home(version) {
     </section>
     <section class="catalog" id="lessons" aria-labelledby="catalog-title">
       <div class="catalog-heading"><div><p class="eyebrow">YOUR SCIENCE LAB</p><h2 id="catalog-title" tabindex="-1">Sample lessons</h2></div>
-      <span class="catalog-count">01 — 04</span></div>
+      <span class="catalog-count">01 — ${lastLessonNumber}</span></div>
       <div class="cards">${lessons.map(lesson => `
         <a class="card ${lesson.id}" href="#lesson/${lesson.id}">
           <div class="card-art">
@@ -161,13 +164,14 @@ function home(version) {
 }
 
 function lessonPage(lesson, version, focusHeading) {
+  const comparingCells = lesson.id === 'cells';
   document.title = `${lesson.title} — Unfold.`;
   app.innerHTML = `${header()}<main class="shell lesson-shell">
     <a href="#lessons" class="back-link">${icon('back', 18)} All lessons</a>
     <div class="lesson-top">
       <div><p class="eyebrow"><span></span> LESSON ${lesson.number} <span class="category-divider"></span> ${lesson.category}</p>
       <h1 id="lesson-title" tabindex="-1">${lesson.title}</h1></div>
-      <div class="lesson-counter">LESSON <strong>${lesson.number}</strong> / 04</div>
+      <div class="lesson-counter">LESSON <strong>${lesson.number}</strong> / ${lastLessonNumber}</div>
     </div>
     <section class="lesson-layout ${lesson.id}" aria-labelledby="lesson-title">
       <aside class="lesson-info">
@@ -206,20 +210,24 @@ function lessonPage(lesson, version, focusHeading) {
   const stage = app.querySelector('.stage');
   const host = app.querySelector('.model-host');
   const stageBottom = stage.querySelector('.stage-bottom');
+  const narrationHost = stage.querySelector('.narration-host');
   const partButtons = Array.from(app.querySelectorAll('[data-part]'));
   const previous = stage.querySelector('[data-action="previous"]');
   const next = stage.querySelector('[data-action="next"]');
   const full = stage.querySelector('[data-action="fullscreen"]');
   const reset = stage.querySelector('[data-action="reset"]');
   const pan = stage.querySelector('[data-action="pan"]');
+  const parts = app.querySelector('.parts');
   let selected = -1;
   let currentStage = 0;
-  let playing = !reducedMotion.matches;
+  let playing = !comparingCells && !reducedMotion.matches;
   let available = false;
   let loadFailed = false;
+  let wallVisible = true;
+  let challenge = false;
 
-  if (narration.hasLesson(lesson.id)) {
-    unmountNarration = mountNarration(stage.querySelector('.narration-host'), narration);
+  if (narrationHost) {
+    unmountNarration = mountNarration(narrationHost, narration);
     narration.setContext(lesson.id);
   }
 
@@ -234,13 +242,26 @@ function lessonPage(lesson, version, focusHeading) {
     details.innerHTML = part
       ? `<p class="eyebrow">PART ${String(selected + 1).padStart(2, '0')} / ${String(lesson.parts.length).padStart(2, '0')}</p>
         <h2>${part[1]}</h2><p class="info-label">What it does</p><p>${part[2]}</p><p class="info-label">How it works</p><p>${part[3]}</p>`
-      : `<p class="eyebrow">DISCOVER</p><h2>How it works</h2><p>${lesson.intro}</p>`;
-    stage.querySelector('.stage-badge span').textContent = part ? 'PART VIEW' : 'ASSEMBLY VIEW';
-    app.querySelector('.tap-hint').textContent = part ? 'Tap empty space to go back' : 'Tap a part to explore';
+      : challenge
+        ? '<p class="eyebrow">CHALLENGE</p><h2>Look for clues</h2><p>Rotate and zoom to inspect the sample, then use what you noticed in the comparison to identify it.</p>'
+        : `<p class="eyebrow">DISCOVER</p><h2>${comparingCells ? 'Compare the cells' : 'How it works'}</h2><p>${lesson.intro}</p>`;
+    stage.querySelector('.stage-badge span').textContent = part ? 'PART VIEW' : challenge ? 'UNKNOWN SAMPLE' : comparingCells ? 'CELL COMPARISON' : 'ASSEMBLY VIEW';
+    app.querySelector('.tap-hint').textContent = part ? 'Tap empty space to go back' : challenge ? 'Inspect the unknown sample' : 'Tap a part to explore';
+    parts.hidden = challenge;
     previous.hidden = next.hidden = !part || !available;
     partButtons.forEach((button, i) => button.setAttribute('aria-pressed', i === selected));
     if (part) {
-      stageBottom.innerHTML = `<button type="button" class="return-button" data-action="assembly">${icon('back', 18)} Back to assembly</button><span class="empty-hint">Tap empty space to go back</span>`;
+      stageBottom.innerHTML = `<button type="button" class="return-button" data-action="assembly">${icon('back', 18)} ${comparingCells ? 'Back to comparison' : 'Back to assembly'}</button><span class="empty-hint">Tap empty space to go back</span>`;
+    } else if (challenge) {
+      stageBottom.innerHTML = cellChallenge();
+    } else if (comparingCells) {
+      stageBottom.innerHTML = `<div class="cell-comparison-controls">
+        <div class="cell-legend"><span>Leaf cell model</span><span>Animal cell model</span></div>
+        <div class="cell-actions">
+          <button type="button" class="cell-button" data-action="cell-wall" ${available ? '' : 'disabled'}>${wallVisible ? 'Peel back wall' : 'Restore cell wall'}</button>
+          <button type="button" class="cell-button cell-button-primary" data-action="cell-start" ${available ? '' : 'disabled'}>Start challenge</button>
+        </div>
+      </div>`;
     } else {
       stageBottom.innerHTML = `<button type="button" class="play-button" data-action="play" aria-label="${playing ? 'Pause' : 'Play'} animation" aria-pressed="${playing}" ${available ? '' : 'disabled'}>${icon(playing ? 'pause' : 'play', 24)}</button>
         <div class="demo-copy"><p class="demo-title">${lesson.demo}</p><p class="demo-caption"></p></div>
@@ -251,8 +272,13 @@ function lessonPage(lesson, version, focusHeading) {
     if (loadFailed) full.hidden = true;
   }
   function select(id, clickedObject) {
+    if (challenge) return;
     const index = lesson.parts.findIndex(part => part[0] === id);
     if (index < 0) return;
+    if (available && comparingCells && id === 'wall' && !wallVisible) {
+      wallVisible = true;
+      viewer.setModelView({ wallVisible, challenge });
+    }
     if (available && !viewer.isolate(id, clickedObject)) return;
     selected = index;
     updateInfo();
@@ -264,7 +290,7 @@ function lessonPage(lesson, version, focusHeading) {
     viewer?.showAssembly();
     updateInfo();
     narration.setContext(lesson.id, 'assembly', { autoplay: false });
-    if (focusPlay) stage.querySelector('.play-button')?.focus();
+    if (focusPlay) stage.querySelector(comparingCells ? '[data-action="cell-wall"]' : '.play-button')?.focus();
   }
   function movePart(offset) {
     select(lesson.parts[(selected + offset + lesson.parts.length) % lesson.parts.length][0]);
@@ -282,6 +308,21 @@ function lessonPage(lesson, version, focusHeading) {
         button.setAttribute('aria-pressed', playing);
         break;
       case 'assembly': back(event.detail === 0); break;
+      case 'cell-wall':
+        wallVisible = !wallVisible;
+        viewer.setModelView({ wallVisible, challenge });
+        button.textContent = wallVisible ? 'Peel back wall' : 'Restore cell wall';
+        break;
+      case 'cell-start':
+      case 'cell-exit':
+        challenge = button.dataset.action === 'cell-start';
+        viewer.setModelView({ wallVisible: challenge || wallVisible, challenge }, true);
+        if (narrationHost) narrationHost.hidden = challenge;
+        if (challenge) narration.leave();
+        else narration.setContext(lesson.id, 'assembly', { autoplay: false });
+        updateInfo();
+        stage.querySelector(challenge ? '#cell-challenge-title' : '[data-action="cell-start"]').focus();
+        break;
       case 'pan': {
         const enabled = pan.getAttribute('aria-pressed') !== 'true';
         pan.setAttribute('aria-pressed', String(enabled));
@@ -307,6 +348,12 @@ function lessonPage(lesson, version, focusHeading) {
         break;
       }
     }
+  });
+  stage.addEventListener('submit', event => {
+    if (!event.target.matches('.cell-challenge')) return;
+    event.preventDefault();
+    const answers = new FormData(event.target);
+    event.target.querySelector('.cell-feedback').textContent = gradeCellChallenge(answers.get('sample'), answers.getAll('evidence'));
   });
   app.querySelector('main').addEventListener('keydown', event => {
     if (event.key === 'Escape' && !document.fullscreenElement) back(true);

@@ -167,3 +167,65 @@ Your skeleton is the framework of bones inside your body. It gives you shape and
 ID: `body/vessels` · [Audio](../public/audio/body/vessels-heart-v1.m4a)
 
 Blood vessels are the tubes that carry blood around your body. Arteries carry blood away from the heart, and veins bring it back. Tiny vessels connect them along the way. Together, they help deliver oxygen and carry away things your body no longer needs.
+
+## Plant Cell vs. Animal Cell
+
+### Cell comparison overview — 23.72 seconds
+
+ID: `cells/assembly` · [Audio](../public/audio/cells/assembly-heart-v1.m4a)
+
+Look inside two cells side by side. On the left is a cell from a leaf. On the right is a representative animal cell. Both have a nucleus and a cell membrane. Look for the leaf cell's green chloroplasts and its large central vacuole. Peel back the rigid cell wall to see the membrane underneath. Then try identifying an unlabeled cell from the clues you found.
+
+### Nucleus — 14.08 seconds
+
+ID: `cells/nucleus` · [Audio](../public/audio/cells/nucleus-heart-v1.m4a)
+
+Both cells have a nucleus. It holds most of the cell's DNA, which carries instructions that help the cell grow and work. The small spot inside is the nucleolus. It helps make the parts that form ribosomes.
+
+### Cell membrane — 13.82 seconds
+
+ID: `cells/membrane` · [Audio](../public/audio/cells/membrane-heart-v1.m4a)
+
+The cell membrane is a thin boundary that controls what enters and leaves. Both cells have one. In the leaf cell, it sits just inside the rigid wall. In the animal cell, the membrane forms the outer boundary.
+
+### Cytoplasm — 13.76 seconds
+
+ID: `cells/cytoplasm` · [Audio](../public/audio/cells/cytoplasm-heart-v1.m4a)
+
+The cytoplasm fills the space inside the membrane around the nucleus. In both cells, the organelles sit in a watery fluid. Many chemical reactions take place in this fluid as the cell goes about its work.
+
+### Mitochondria — 13.21 seconds
+
+ID: `cells/mitochondria` · [Audio](../public/audio/cells/mitochondria-heart-v1.m4a)
+
+Mitochondria help both cells get usable energy from food. They make a molecule called A T P, which supplies energy for the work cells do. Look at the wavy folds, which show the shape of the inner membrane.
+
+### Endoplasmic reticulum — 16.47 seconds
+
+ID: `cells/er` · [Audio](../public/audio/cells/er-heart-v1.m4a)
+
+These folded membranes are part of the endoplasmic reticulum, or E R for short. Both cells have this network. Some regions help make and process proteins. Other regions help make lipids, which are important building blocks of cell membranes.
+
+### Cell wall — 12.95 seconds
+
+ID: `cells/wall` · [Audio](../public/audio/cells/wall-heart-v1.m4a)
+
+The leaf cell has a rigid wall outside its cell membrane. The wall supports the cell and helps it keep its shape. Return to the comparison and peel back the wall to find the thin membrane just inside it.
+
+### Chloroplasts — 16.92 seconds
+
+ID: `cells/chloroplasts` · [Audio](../public/audio/cells/chloroplasts-heart-v1.m4a)
+
+These green structures are chloroplasts. In the leaf cell, they capture energy from light. The cell uses this energy to help make sugars from carbon dioxide and water. This process is called photosynthesis. The animal cell has no chloroplasts.
+
+### Large central vacuole — 13.16 seconds
+
+ID: `cells/vacuole` · [Audio](../public/audio/cells/vacuole-heart-v1.m4a)
+
+Much of the leaf cell is taken up by a large central vacuole. It stores water and other substances. As it fills with water, pressure pushes the cell membrane against the wall, helping the cell stay firm.
+
+### Lysosomes — 15.62 seconds
+
+ID: `cells/lysosomes` · [Audio](../public/audio/cells/lysosomes-heart-v1.m4a)
+
+These small compartments in the animal cell are lysosomes. They contain enzymes that break down old cell parts and other material. The cell can then reuse some of the smaller pieces. Think of a lysosome as part of the recycling system.

@@ -1,6 +1,6 @@
 # Narration for all Unfold lessons
 
-All four lessons have an assembly overview and a separate explanation for every selectable part: **26 recordings** in total.
+Each lesson has an overview and a separate explanation for every selectable part.
 
 | Lesson | Overview | Parts | Total |
 | --- | --- | --- | --- |
@@ -63,9 +63,7 @@ Model and tool references:
 
 `npm test` checks first-visit choice, remembered silence, pause/resume, Replay, mute, rapid selections, stale promise handling, missing/blocked audio recovery, every lesson/part mapping, encoded durations and recording/transcript provenance. `npm run build` packages the complete set.
 
-Verification completed: all **18 automated tests** pass and the production build passes with the existing viewer bundle-size warning. All 26 M4A files decode to non-silent audio without full-scale clipping, and the production preview serves every recording intact with the correct audio MIME type and byte-range support. The old system-voice files are absent.
-
-No browser is connected in this session. Automated media-controller checks use a simulated audio element and do not verify audible quality, browser autoplay policy or actual 3D clicks. Run these manual checks with `npm run dev`:
+The automated media-controller checks use a simulated audio element. Run the following browser and listening checks with `npm run dev`:
 
 - [ ] In a fresh browser profile, open any lesson. No narration plays before choosing Start with audio or Explore silently.
 - [ ] Start with audio plays the correct overview and shows its transcript. Explore silently remains quiet after reload. Mute/Unmute can change this choice at any time.

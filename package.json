@@ -1,7 +1,7 @@
 {
   "name": "unfold",
   "version": "1.0.0",
-  "description": "Four hands-on interactive 3D science lessons",
+  "description": "Hands-on interactive 3D science lessons",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

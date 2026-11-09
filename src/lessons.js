@@ -62,4 +62,21 @@ export const lessons = [
       ['vessels', 'Blood vessels', 'Tubes that carry blood around your body.', 'Arteries carry blood away from the heart. Veins bring it back.'],
     ],
   },
+  {
+    id: 'cells', number: '05', category: 'Life science', title: 'Plant Cell vs. Animal Cell',
+    card: 'Compare two cells and discover what sets them apart.',
+    intro: 'Compare a photosynthetic leaf cell with a representative animal cell. Pick a structure to see where it appears. These cutaways use colors and sizes to make the structures easier to see.',
+    source: ['OpenStax Biology 2e', 'https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells'],
+    parts: [
+      ['nucleus', 'Nucleus', 'Stores most of the cell’s DNA.', 'Both models have a nucleus. Its DNA carries instructions that help the cell grow and work.'],
+      ['membrane', 'Cell membrane', 'Controls what passes into and out of the cell.', 'Both cells have a thin membrane. In the plant cell, it sits just inside the cell wall.'],
+      ['cytoplasm', 'Cytoplasm', 'Fills the cell around the nucleus.', 'In both cells, organelles sit in a watery fluid where many chemical reactions take place.'],
+      ['mitochondria', 'Mitochondria', 'Make most of the cell’s usable energy supply.', 'Both cells use mitochondria to make ATP, a molecule that supplies energy for cellular work.'],
+      ['er', 'Endoplasmic reticulum', 'Helps make and process proteins and lipids.', 'Both cells contain this network of connected membranes. Ribosomes on the rough part make proteins.'],
+      ['wall', 'Cell wall', 'Supports the plant cell and helps it keep its shape.', 'The rigid wall lies outside the cell membrane. Peel it back to see the membrane underneath.'],
+      ['chloroplasts', 'Chloroplasts', 'Capture light energy for photosynthesis.', 'In this leaf cell, chloroplasts use light energy to help make sugars from carbon dioxide and water.'],
+      ['vacuole', 'Large central vacuole', 'Stores water and helps keep the plant cell firm.', 'When this compartment fills with water, pressure pushes the cell membrane against the wall.'],
+      ['lysosomes', 'Lysosomes', 'Break down material the animal cell can reuse.', 'Enzymes inside lysosomes digest worn-out cell parts and other materials.'],
+    ],
+  },
 ];
