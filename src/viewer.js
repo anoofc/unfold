@@ -4,10 +4,16 @@ import { T, v, group } from './geometry.js';
 import { engine } from './models/engine.js';
 import { earth } from './models/earth.js';
 import { telephone } from './models/telephone.js';
-import { body } from './models/body.js';
 import { SoftwareRenderer } from './software-renderer.js';
 
-const models = { engine, earth, telephone, body };
+const models = { engine, earth, telephone };
+
+export async function prepareViewerModel(id) {
+  if (id === 'body' && !models.body) {
+    const { loadBodyModel } = await import('./models/body.js');
+    models.body = await loadBodyModel();
+  }
+}
 
 function setup() {
   const canvas = document.createElement('canvas');
@@ -263,6 +269,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     isolated.traverse(object => {
       if (fadedMaterials.has(object.material)) object.material = fadedMaterials.get(object.material);
     });
+    model.prepareIsolation?.(isolated);
     original.matrixWorld.decompose(isolated.position, isolated.quaternion, isolated.scale);
     scene.add(isolated);
     prepareContext();
@@ -357,7 +364,8 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   resize();
 
   function draw(now) {
-    const elapsed = Math.min((now - lastFrame) / 1000, 0.1);
+    // The first animation-frame timestamp can predate the viewer setup.
+    const elapsed = T.MathUtils.clamp((now - lastFrame) / 1000, 0, 0.1);
     lastFrame = now;
     if (playing && !isolated) time += elapsed;
     if (!isolated && (playing || lastStage < 0)) {
@@ -407,7 +415,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   };
 }
 
-export function drawThumbnails(cards) {
+export async function drawThumbnails(cards) {
   const { renderer, scene, environment } = setup();
   const width = 720;
   const height = 390;
@@ -415,6 +423,7 @@ export function drawThumbnails(cards) {
   const camera = new T.PerspectiveCamera(35, width / height, 0.01, 100);
   try {
     for (const [id, canvas] of cards) {
+      await prepareViewerModel(id);
       const root = group(scene);
       const model = models[id](root);
       model.update(model.previewTime);

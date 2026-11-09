@@ -102,7 +102,8 @@ html:fullscreen { overflow-y: auto; background: #100b22; }
 .stage-actions { display: flex; gap: 6px; }
 .icon-button { border-radius: 9px; width: 42px; height: 42px; display: grid; place-items: center; background: #2c2044; border: 1px solid #4e3c68; color: #e6d6ff; padding: 0; }
 .icon-button:hover:not(:disabled) { background: #44315d; }
-.stage-center { min-height: 345px; position: relative; }
+.stage-center { min-height: var(--model-stage-min, 345px); position: relative; }
+.lesson-layout.body { --model-stage-min: clamp(340px, 49vh, 500px); }
 .stage-sky { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .model-host { position: absolute; inset: 0; min-width: 0; min-height: 0; }
 .model-host canvas { display: block; cursor: grab; touch-action: none; outline-offset: -3px; }
@@ -162,7 +163,7 @@ html:fullscreen { overflow-y: auto; background: #100b22; }
   .card h3 { font-size: clamp(15px, 3vw, 21px); }
   .lesson-layout { grid-template-columns: minmax(0, 1fr); }
   .stage { grid-row: 1; min-height: min(570px, 62vh); }
-  .stage-center { min-height: 310px; }
+  .stage-center { min-height: var(--model-stage-min, 310px); }
   .lesson-info { padding: 17px; }
   .part-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .lesson-counter { display: none; }

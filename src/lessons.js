@@ -48,6 +48,7 @@ export const lessons = [
   },
   {
     id: 'body', number: '04', category: 'Life science', title: 'Human Body',
+    assetCredit: 'human-body-credits.txt',
     card: 'Meet the parts that help you breathe and move.',
     intro: 'Look inside the body and see what happens when you breathe and your heart beats. Pick a part to explore it.',
     demo: 'Watch the body in motion', stages: ['Breathe and pump'],

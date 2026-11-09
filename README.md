@@ -26,7 +26,7 @@ Open the local URL printed by Vite. Run `npm run build` for a production build o
 
 - `src/lessons.js` defines the labels, part explanations and animation steps.
 - `src/narration-clips.js` maps narration and transcripts to lesson and part IDs. `src/narration.js` owns the single audio player; `src/narration-ui.js` renders its controls and transcript.
-- `src/models/` defines the four editable, procedural 3D models and their animations.
+- `src/models/` defines the 3D lessons and their animations. The Human Body lesson loads an adapted BodyParts3D cutaway. See [3D model credits](public/human-body-credits.txt) for sources and license details.
 - `src/viewer.js` handles the 3D camera, model selection and controls. The renderer uses WebGL 2 when available and falls back to Canvas 2D.
 - `src/style.css` defines the space-inspired UI, responsive layout and visual controls.
 - `public/eis-logo.png` is the supplied EIS mark.

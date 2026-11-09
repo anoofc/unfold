@@ -153,7 +153,7 @@ function home(version) {
 
   import('./viewer.js').then(({ drawThumbnails }) => {
     if (routeVersion !== version) return;
-    drawThumbnails(Array.from(app.querySelectorAll('[data-thumbnail]'), canvas => [canvas.dataset.thumbnail, canvas]));
+    return drawThumbnails(Array.from(app.querySelectorAll('[data-thumbnail]'), canvas => [canvas.dataset.thumbnail, canvas]));
   }).catch(() => {
     // The catalog remains usable with symbolic illustrations when WebGL is unavailable.
   });
@@ -176,6 +176,7 @@ function lessonPage(lesson, version, focusHeading) {
           <div class="part-list">${lesson.parts.map(([id, name], i) => `<button type="button" data-part="${id}" aria-pressed="false"><span>${String(i + 1).padStart(2, '0')}</span>${name}</button>`).join('')}</div>
         </div>
         <a class="source-link" href="${lesson.source[1]}" target="_blank" rel="noopener noreferrer">Learn more · ${lesson.source[0]} <span aria-hidden="true">↗</span></a>
+        ${lesson.assetCredit ? `<a class="source-link" href="${base}${lesson.assetCredit}" target="_blank" rel="noopener noreferrer">3D anatomy model credits <span aria-hidden="true">↗</span></a>` : ''}
       </aside>
       <div class="stage">
         <div class="stage-top"><span class="stage-badge">${icon('cube', 15)} <span>ASSEMBLY VIEW</span></span>
@@ -304,7 +305,9 @@ function lessonPage(lesson, version, focusHeading) {
   updateInfo();
   if (focusHeading) app.querySelector('#lesson-title').focus({ preventScroll: true });
 
-  import('./viewer.js').then(({ createViewer }) => {
+  import('./viewer.js').then(async ({ createViewer, prepareViewerModel }) => {
+    if (routeVersion !== version) return;
+    await prepareViewerModel(lesson.id);
     if (routeVersion !== version) return;
     viewer = createViewer(host, lesson, {
       onSelect: select, onBack: back, autoPlay: playing,

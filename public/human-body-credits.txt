@@ -1,0 +1,20 @@
+Unfold | Human Body model credits
+
+BodyParts3D, © The Database Center for Life Science licensed under
+CC Attribution 4.0 International.
+Dataset and terms: https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html
+License: https://creativecommons.org/licenses/by/4.0/
+Source archive: https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html
+Source data: version 4.0, IS-A and PART-OF reduced polygon archives.
+Lung parenchyma: BodyParts3D 4.3, elements FJ6595–FJ6612,
+retrieved through Oliver Case’s verified BodyParts3D mesh collection:
+https://doi.org/10.5281/zenodo.22727173
+
+Unfold adapts these meshes by selecting structures, simplifying geometry,
+joining the lung segments by lobe, aligning and scaling the models, and
+applying educational cutaways and colours. Breathing, heartbeat and blood
+flow markers are illustrative animations.
+
+The adapted model is also offered under the legacy archive’s
+CC Attribution-ShareAlike 2.1 Japan terms.
+https://creativecommons.org/licenses/by-sa/2.1/jp/
