@@ -16,6 +16,7 @@ const icons = {
   fullscreen: '<path d="M9 4H4v5m11-5h5v5m0 6v5h-5m-6 0H4v-5"/>',
   collapse: '<path d="M4 9h5V4m6 0v5h5m0 6h-5v5m-6 0v-5H4"/>',
   hand: '<path d="M9 13V6a1.5 1.5 0 0 1 3 0v5-1a1.5 1.5 0 0 1 3 0v2-1a1.5 1.5 0 0 1 3 0v2a1.5 1.5 0 0 1 3 0v3a5 5 0 0 1-5 5h-3a4 4 0 0 1-3-1l-5-5a1.7 1.7 0 0 1 2-2l2 1"/>',
+  pan: '<path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3"/>',
   zoom: '<circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 5.5 5.5M7.5 10h5m-2.5-2.5v5"/>',
   cube: '<path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5m-9 5L3 7m9 5v10"/>',
   engine: '<path d="M3 9h5l3-3h6l4 3v8h-5l-2 3H7l-4-4V9Zm1 4H1m20 0h2m-8-7V3m-3 0h6"/>',
@@ -181,6 +182,7 @@ function lessonPage(lesson, version, focusHeading) {
       <div class="stage">
         <div class="stage-top"><span class="stage-badge">${icon('cube', 15)} <span>ASSEMBLY VIEW</span></span>
           <div class="stage-actions">
+            <button type="button" data-action="pan" class="icon-button" aria-label="Pan mode" aria-pressed="false" title="Pan mode · drag to move the model" disabled>${icon('pan')}</button>
             <button type="button" data-action="reset" class="icon-button" aria-label="Reset view" title="Reset view">${icon('reset')}</button>
             <button type="button" data-action="fullscreen" class="icon-button" aria-label="Full screen" title="Full screen">${icon('fullscreen')}</button>
           </div>
@@ -197,7 +199,7 @@ function lessonPage(lesson, version, focusHeading) {
         <div class="stage-footer"><div class="stage-bottom"></div>${narration.hasLesson(lesson.id) ? '<div class="narration-host"></div>' : ''}</div>
       </div>
     </section>
-    <div class="gesture-row"><span>${icon('hand', 17)} Drag to rotate</span><span>${icon('zoom', 17)} Scroll or pinch to zoom</span><span>${icon('cube', 17)} <span class="tap-hint">Tap a part to explore</span></span></div>
+    <div class="gesture-row"><span>${icon('hand', 17)} Drag to rotate</span><span>${icon('pan', 17)} Pan mode, right-drag or two fingers</span><span>${icon('zoom', 17)} Scroll or pinch to zoom</span><span>${icon('cube', 17)} <span class="tap-hint">Tap a part to explore</span></span></div>
   </main>`;
 
   const details = app.querySelector('.lesson-details');
@@ -209,6 +211,7 @@ function lessonPage(lesson, version, focusHeading) {
   const next = stage.querySelector('[data-action="next"]');
   const full = stage.querySelector('[data-action="fullscreen"]');
   const reset = stage.querySelector('[data-action="reset"]');
+  const pan = stage.querySelector('[data-action="pan"]');
   let selected = -1;
   let currentStage = 0;
   let playing = !reducedMotion.matches;
@@ -244,7 +247,7 @@ function lessonPage(lesson, version, focusHeading) {
         ${lesson.stages.length > 1 ? `<div class="cycle">${lesson.stages.map((name, i) => `<span class="cycle-step"><span>${i + 1}</span> ${name}</span>`).join('')}</div>` : ''}`;
       updateStage();
     }
-    reset.disabled = !available;
+    pan.disabled = reset.disabled = !available;
     if (loadFailed) full.hidden = true;
   }
   function select(id, clickedObject) {
@@ -279,6 +282,12 @@ function lessonPage(lesson, version, focusHeading) {
         button.setAttribute('aria-pressed', playing);
         break;
       case 'assembly': back(event.detail === 0); break;
+      case 'pan': {
+        const enabled = pan.getAttribute('aria-pressed') !== 'true';
+        pan.setAttribute('aria-pressed', String(enabled));
+        viewer?.setPanMode(enabled);
+        break;
+      }
       case 'reset': viewer?.resetView(); break;
       case 'previous': movePart(-1); break;
       case 'next': movePart(1); break;

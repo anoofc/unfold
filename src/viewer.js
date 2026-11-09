@@ -5,6 +5,7 @@ import { engine } from './models/engine.js';
 import { earth } from './models/earth.js';
 import { telephone } from './models/telephone.js';
 import { SoftwareRenderer } from './software-renderer.js';
+import { createPanLimit } from './camera-pan.js';
 
 const models = { engine, earth, telephone };
 
@@ -104,7 +105,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   const { renderer, scene, environment } = setup();
   const canvas = renderer.domElement;
   canvas.tabIndex = 0;
-  canvas.setAttribute('aria-label', '3D model. Drag or use arrow keys to rotate, scroll or press plus and minus to zoom. Use the part buttons to select a part.');
+  canvas.setAttribute('aria-label', '3D model. Drag or use arrow keys to rotate. Right-drag, use two fingers, or press Shift and an arrow key to pan. Scroll, pinch, or press plus or minus to zoom.');
   renderer.setPixelRatio?.(Math.min(window.devicePixelRatio || 1, 1.75));
   host.append(canvas);
   const root = group(scene);
@@ -112,7 +113,8 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   const camera = new T.PerspectiveCamera(37, 1, 0.012, 150);
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
-  controls.enablePan = false;
+  controls.enablePan = true;
+  controls.screenSpacePanning = true;
   controls.rotateSpeed = 0.69;
   controls.zoomSpeed = 0.84;
 
@@ -122,7 +124,11 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   let time = 0;
   let lastStage = -1;
   let needsRender = true;
-  controls.addEventListener('change', () => { needsRender = true; });
+  let panLimit;
+  controls.addEventListener('change', () => {
+    if (!transition) panLimit?.(camera, controls.target);
+    needsRender = true;
+  });
   let raf;
   let lastFrame = performance.now();
   let assemblyPose;
@@ -151,6 +157,8 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     controls.target.copy(pose.target);
     controls.minDistance = frameDistance * 0.36;
     controls.maxDistance = frameDistance * 2.7;
+    panLimit = createPanLimit(activeObject);
+    panLimit(camera, controls.target);
     controls.update();
     needsRender = true;
   }
@@ -235,6 +243,9 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
 
   function fit() {
     if (transition) finishTransition();
+    controls.enableDamping = false;
+    controls.update();
+    controls.enableDamping = true;
     applyPose(fittedPose());
   }
 
@@ -251,7 +262,15 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
         const pose = assemblyPose && Math.abs(camera.aspect - assemblyAspect) < 0.01 ? assemblyPose : assemblyFit();
         moveTo(pose, true);
       } else moveTo(fittedPose());
-    } else fit();
+    } else {
+      const pose = fittedPose();
+      if (frameDistance) {
+        const offset = camera.position.clone().sub(controls.target);
+        pose.target = controls.target.clone();
+        pose.position = pose.target.clone().addScaledVector(offset, pose.frameDistance / frameDistance);
+      }
+      applyPose(pose);
+    }
   }
 
   function isolate(id, clickedObject) {
@@ -298,7 +317,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   const activePointers = new Set();
   function pointerDown(event) {
     activePointers.add(event.pointerId);
-    if (activePointers.size !== 1 || event.button !== 0) {
+    if (activePointers.size !== 1 || event.button !== 0 || event.shiftKey || event.ctrlKey || event.metaKey) {
       pointer = null;
       return;
     }
@@ -335,6 +354,18 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
   function keyboard(event) {
     if (transition) return;
     const direction = v().subVectors(camera.position, controls.target);
+    const key = event.key;
+    if (event.shiftKey && key.startsWith('Arrow')) {
+      const axis = key === 'ArrowLeft' || key === 'ArrowRight' ? 0 : 1;
+      const sign = key === 'ArrowLeft' || key === 'ArrowDown' ? 1 : -1;
+      const offset = v().setFromMatrixColumn(camera.matrixWorld, axis)
+        .multiplyScalar(sign * direction.length() * 0.07);
+      controls.target.add(offset);
+      camera.position.add(offset);
+      controls.update();
+      event.preventDefault();
+      return;
+    }
     const rotation = new T.Spherical().setFromVector3(direction);
     const step = 0.15;
     switch (event.key) {
@@ -400,6 +431,10 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     isolate,
     showAssembly,
     setPlaying(value) { playing = value; },
+    setPanMode(enabled) {
+      controls.mouseButtons.LEFT = enabled ? T.MOUSE.PAN : T.MOUSE.ROTATE;
+      controls.touches.ONE = enabled ? T.TOUCH.PAN : T.TOUCH.ROTATE;
+    },
     resetView: fit,
     destroy() {
       observer.disconnect();

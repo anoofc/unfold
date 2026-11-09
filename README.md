@@ -16,7 +16,7 @@ Open the local URL printed by Vite. Run `npm run build` for a production build o
 ## Explore a lesson
 
 - Click or tap a visible part or choose its name. The viewer frames that part on its own.
-- Drag to orbit and use the mouse wheel or pinch to zoom. The focused canvas also supports the arrow keys, plus and minus.
+- Drag to orbit and use the mouse wheel or pinch to zoom. Pan with right-drag, two-finger drag, or the **Pan mode** button and a regular drag. On the focused canvas, use the arrow keys to orbit, Shift with an arrow key to pan, and plus or minus to zoom. **Reset view** restores the centered view.
 - Tap empty space or use **Back to assembly** to return. Escape works in the normal page view.
 - Use **Play animation** or **Pause animation** to control the assembly. The default respects the system’s reduced-motion setting.
 - In any lesson, choose **Start with audio** or **Explore silently**. The choice is saved on this browser. **Mute / Unmute** changes it at any time. Narration has its own **Play / Pause** and **Replay** controls, separate from animation.
