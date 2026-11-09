@@ -101,4 +101,16 @@ export const narrationClips = {
     lysosomes: clip('cells', 'lysosomes', 'Lysosomes',
       'These small compartments in the animal cell are lysosomes. They contain enzymes that break down old cell parts and other material. The cell can then reuse some of the smaller pieces. Think of a lysosome as part of the recycling system.'),
   },
+  gears: {
+    assembly: clip('gears', 'assembly', 'Gear ratio overview',
+      'Turn the crank and watch the two gears. The blue driver has twenty-four teeth. Its teeth push the gold driven gear in the opposite direction. A bigger driven gear needs more teeth to pass before it makes a full turn, so it turns more slowly. Swap the driven gear and compare the two counters. Then see if you can make the output turn at half speed.'),
+    crank: clip('gears', 'crank', 'Hand crank',
+      'The hand crank turns the input shaft. The blue gear is fixed to that shaft, so it makes one full turn whenever the crank does. Try turning the crank the other way. Both gears reverse their direction.'),
+    driver: clip('gears', 'driver', 'Driver gear',
+      'The blue driver gear has twenty-four teeth. Its teeth push on the gold gear where the two wheels meet. One full turn of the driver moves twenty-four teeth past that contact point. The same number of driven teeth move past it.'),
+    driven: clip('gears', 'driven', 'Driven gear',
+      'The gold driven gear takes motion from the blue gear. When you choose one with more teeth, it takes a bigger movement of the driver to make it turn all the way around. Try a smaller gear and watch what changes.'),
+    support: clip('gears', 'support', 'Frame and bearings',
+      'The frame holds the bearings, which support the shafts and let them spin. When you swap in a bigger driven gear, its shaft moves farther from the driver. The spacing keeps the teeth able to fit together.'),
+  },
 };

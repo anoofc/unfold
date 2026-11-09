@@ -1,6 +1,6 @@
 # Unfold.
 
-Unfold is a 3D science lab for kids. The sample lessons cover a four-stroke, four-cylinder engine, Earth's layers, an early Bell telephone, the human body, and a comparison of plant and animal cells.
+Unfold is a 3D science lab for kids. The sample lessons cover a four-stroke, four-cylinder engine, Earth's layers, an early Bell telephone, the human body, plant and animal cells, and gears and gear ratios.
 
 ## Run in VS Code
 
@@ -20,6 +20,7 @@ Open the local URL printed by Vite. Run `npm run build` for a production build o
 - Tap empty space or use **Back to assembly** to return. Escape works in the normal page view.
 - Use **Play animation** or **Pause animation** in lessons with an animation. The default respects the system’s reduced-motion setting.
 - In the cell comparison, select a shared structure to see it in both cells. Use **Peel back wall** to expose the leaf cell’s membrane, then try **Start challenge** to identify a cell from two structural clues.
+- In the gear experiment, **Turn crank** adds one input revolution. Choose a direction and swap the driven gear to compare the counters. In the challenge, find a setup that makes the output turn at half speed.
 - In any lesson, choose **Start with audio** or **Explore silently**. The choice is saved on this browser. **Mute / Unmute** changes it at any time. Narration has its own **Play / Pause** and **Replay** controls, separate from animation.
 - Every lesson overview and selectable part has narration and a matching transcript. Returning to the assembly stops narration. Press **Replay** to hear the overview again. The matching transcript remains available without audio.
 

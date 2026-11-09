@@ -229,3 +229,35 @@ Much of the leaf cell is taken up by a large central vacuole. It stores water an
 ID: `cells/lysosomes` · [Audio](../public/audio/cells/lysosomes-heart-v1.m4a)
 
 These small compartments in the animal cell are lysosomes. They contain enzymes that break down old cell parts and other material. The cell can then reuse some of the smaller pieces. Think of a lysosome as part of the recycling system.
+
+## Gears and Gear Ratios
+
+### Gear ratio overview — 21.55 seconds
+
+ID: `gears/assembly` · [Audio](../public/audio/gears/assembly-heart-v1.m4a)
+
+Turn the crank and watch the two gears. The blue driver has twenty-four teeth. Its teeth push the gold driven gear in the opposite direction. A bigger driven gear needs more teeth to pass before it makes a full turn, so it turns more slowly. Swap the driven gear and compare the two counters. Then see if you can make the output turn at half speed.
+
+### Hand crank — 11.95 seconds
+
+ID: `gears/crank` · [Audio](../public/audio/gears/crank-heart-v1.m4a)
+
+The hand crank turns the input shaft. The blue gear is fixed to that shaft, so it makes one full turn whenever the crank does. Try turning the crank the other way. Both gears reverse their direction.
+
+### Driver gear — 14.31 seconds
+
+ID: `gears/driver` · [Audio](../public/audio/gears/driver-heart-v1.m4a)
+
+The blue driver gear has twenty-four teeth. Its teeth push on the gold gear where the two wheels meet. One full turn of the driver moves twenty-four teeth past that contact point. The same number of driven teeth move past it.
+
+### Driven gear — 12.91 seconds
+
+ID: `gears/driven` · [Audio](../public/audio/gears/driven-heart-v1.m4a)
+
+The gold driven gear takes motion from the blue gear. When you choose one with more teeth, it takes a bigger movement of the driver to make it turn all the way around. Try a smaller gear and watch what changes.
+
+### Frame and bearings — 12.22 seconds
+
+ID: `gears/support` · [Audio](../public/audio/gears/support-heart-v1.m4a)
+
+The frame holds the bearings, which support the shafts and let them spin. When you swap in a bigger driven gear, its shaft moves farther from the driver. The spacing keeps the teeth able to fit together.

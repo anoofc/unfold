@@ -79,4 +79,16 @@ export const lessons = [
       ['lysosomes', 'Lysosomes', 'Break down material the animal cell can reuse.', 'Enzymes inside lysosomes digest worn-out cell parts and other materials.'],
     ],
   },
+  {
+    id: 'gears', number: '06', category: 'Machines', title: 'Gears and Gear Ratios',
+    card: 'Turn a crank and see how gear size changes speed.',
+    intro: 'Turn the hand crank and compare the blue input with the gold output. Swap the driven gear to see how tooth count changes its speed. Watch the gears turn in opposite directions.',
+    source: ['KHK Gear Technical Reference', 'https://khkgears.net/pdf/gearabc_a1.pdf'],
+    parts: [
+      ['crank', 'Hand crank', 'Turns the input shaft.', 'One full turn of the crank makes the blue driver gear turn once.'],
+      ['driver', 'Driver gear', 'Transfers motion from the crank to the other gear.', 'Each full turn moves all 24 driver teeth past the point where the gears meet.'],
+      ['driven', 'Driven gear', 'Takes motion from the driver and turns the output shaft.', 'More driven teeth mean fewer output turns for the same number of input turns.'],
+      ['support', 'Frame and bearings', 'Support the shafts and keep the gears spaced correctly.', 'The driven shaft shifts farther away when a larger gear is fitted so the teeth stay in mesh.'],
+    ],
+  },
 ];

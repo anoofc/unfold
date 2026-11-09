@@ -5,10 +5,11 @@ import { engine } from './models/engine.js';
 import { earth } from './models/earth.js';
 import { telephone } from './models/telephone.js';
 import { cells } from './models/cells.js';
+import { gears } from './models/gears.js';
 import { SoftwareRenderer } from './software-renderer.js';
 import { createPanLimit } from './camera-pan.js';
 
-const models = { engine, earth, telephone, cells };
+const models = { engine, earth, telephone, cells, gears };
 
 export async function prepareViewerModel(id) {
   if (id === 'body' && !models.body) {
@@ -104,7 +105,7 @@ function hitPart(object, root) {
   return part ?? null;
 }
 
-export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay }) {
+export function createViewer(host, lesson, { onSelect, onBack, onStage, onModelProgress, autoPlay }) {
   const { renderer, scene, environment } = setup();
   const canvas = renderer.domElement;
   canvas.tabIndex = 0;
@@ -403,6 +404,11 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     const elapsed = T.MathUtils.clamp((now - lastFrame) / 1000, 0, 0.1);
     lastFrame = now;
     if (playing && !isolated) time += elapsed;
+    const progress = isolated ? undefined : model.advance?.(elapsed);
+    if (progress !== undefined) {
+      needsRender = true;
+      onModelProgress?.(progress);
+    }
     if (!isolated && (playing || lastStage < 0)) {
       const stage = model.update(time);
       if (lastStage !== stage) {
@@ -437,14 +443,14 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
     setPlaying(value) { playing = value; },
     setModelView(view, reframe) {
       if (transition) finishTransition();
-      model.setView(view);
+      const changedGeometry = model.setView(view);
       pickingEnabled = !view.challenge;
       if (reframe) fit();
-      else {
+      else if (changedGeometry !== false) {
         panLimit = createPanLimit(activeObject);
         panLimit(camera, controls.target);
-        needsRender = true;
       }
+      needsRender = true;
     },
     setPanMode(enabled) {
       controls.mouseButtons.LEFT = enabled ? T.MOUSE.PAN : T.MOUSE.ROTATE;

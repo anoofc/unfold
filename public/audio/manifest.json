@@ -300,6 +300,46 @@
       "durationSeconds": 15.616,
       "transcriptSha256": "69b763f16615c454bd88b82d8b55cd78a9ee4d197582104347886830ac59168a",
       "audioSha256": "fbcfb6b7daedcc0b64196af04a7087063933fc6d01883f94bf5f82f978655a70"
+    },
+    {
+      "lessonId": "gears",
+      "contextId": "assembly",
+      "src": "audio/gears/assembly-heart-v1.m4a",
+      "durationSeconds": 21.547,
+      "transcriptSha256": "467dc1a9a71296dee588e7843045119cf0233beef4cd2e59ea274b783fa55117",
+      "audioSha256": "883cf0b7c184dfcba1bea6a6be3f34e50d1c9e16ebdacdf3adda0c8189f9f74c"
+    },
+    {
+      "lessonId": "gears",
+      "contextId": "crank",
+      "src": "audio/gears/crank-heart-v1.m4a",
+      "durationSeconds": 11.947,
+      "transcriptSha256": "0ec0b098fdced375e9c54b0cb99a945b1ee993899a79651916ed2ff8e6299915",
+      "audioSha256": "2e5951fa359cbf00f04cf0ae914acb2bb84ac596efc8fa80d507d2ee649a6976"
+    },
+    {
+      "lessonId": "gears",
+      "contextId": "driver",
+      "src": "audio/gears/driver-heart-v1.m4a",
+      "durationSeconds": 14.315,
+      "transcriptSha256": "d7c15df438c7ca9edcbca0480be18a82d2372d11142d3d5172fb46e5e149ef68",
+      "audioSha256": "46ed5873482f275d78b71c25260b244bcba86a7a0cddba78f66699820f643806"
+    },
+    {
+      "lessonId": "gears",
+      "contextId": "driven",
+      "src": "audio/gears/driven-heart-v1.m4a",
+      "durationSeconds": 12.907,
+      "transcriptSha256": "4ad28adcd72edef5f70e5ed31474afe8377de03ea1701f1b9c5eae11c80a80e8",
+      "audioSha256": "0b16011cc6a0504a58e2f0b630a7857030c9ea5acf16c07ff729eb86a7e67a23"
+    },
+    {
+      "lessonId": "gears",
+      "contextId": "support",
+      "src": "audio/gears/support-heart-v1.m4a",
+      "durationSeconds": 12.224,
+      "transcriptSha256": "08a48299356422ef2fc38dc7ff4beecbe2bca80a08cbea553d707a44c2315d57",
+      "audioSha256": "e8706601ce8b6f24166aff02a0e13da2198d9463fb15553f4ce17330bebbdc13"
     }
   ]
 }
