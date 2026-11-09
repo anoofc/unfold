@@ -1,0 +1,302 @@
+From b67f77cce14575645f5f6bfcb3459719fc30bdb2 Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Mon, 9 Nov 2026 14:09:36 +0300
+Subject: [PATCH] Add bounded panning to the lesson viewer
+
+---
+ README.md                |  2 +-
+ src/camera-pan.js        | 78 ++++++++++++++++++++++++++++++++++++++++
+ src/main.js              | 13 +++++--
+ src/style.css            |  1 +
+ src/viewer.js            | 45 ++++++++++++++++++++---
+ tests/camera-pan.test.js | 62 ++++++++++++++++++++++++++++++++
+ 6 files changed, 193 insertions(+), 8 deletions(-)
+ create mode 100644 src/camera-pan.js
+ create mode 100644 tests/camera-pan.test.js
+
+diff --git a/README.md b/README.md
+index 82e6d7d..b1b9eaf 100644
+--- a/README.md
++++ b/README.md
+@@ -18,3 +18,3 @@ Open the local URL printed by Vite. Run `npm run build` for a production build o
+ - Click or tap a visible part or choose its name. The viewer frames that part on its own.
+-- Drag to orbit and use the mouse wheel or pinch to zoom. The focused canvas also supports the arrow keys, plus and minus.
++- Drag to orbit and use the mouse wheel or pinch to zoom. Pan with right-drag, two-finger drag, or the **Pan mode** button and a regular drag. On the focused canvas, use the arrow keys to orbit, Shift with an arrow key to pan, and plus or minus to zoom. **Reset view** restores the centered view.
+ - Tap empty space or use **Back to assembly** to return. Escape works in the normal page view.
+diff --git a/src/camera-pan.js b/src/camera-pan.js
+new file mode 100644
+index 0000000..d773765
+--- /dev/null
++++ b/src/camera-pan.js
+@@ -0,0 +1,78 @@
++import { Box3, MathUtils, Matrix4, Vector3 } from 'three';
++
++// Leave a margin so the model cannot disappear behind the viewport edge.
++const visibleInset = 0.78;
++
++export function createPanLimit(model) {
++  const center = new Box3().setFromObject(model).getCenter(new Vector3());
++  const samples = [];
++  model.traverseVisible(mesh => {
++    const positions = mesh.geometry?.attributes.position;
++    if (!mesh.isMesh || !positions?.count || mesh.material?.opacity === 0 || Object.hasOwn(mesh, 'raycast')) return;
++    const stride = Math.ceil(positions.count / 96);
++    const points = [];
++    for (let index = 0; index < positions.count; index += stride) {
++      points.push(new Vector3().fromBufferAttribute(positions, index));
++    }
++    // Sparse meshes also need surface samples when a long face fills the view.
++    if (positions.count <= 96) {
++      const indices = mesh.geometry.index;
++      const count = indices?.count ?? positions.count;
++      for (let i = 0; i + 2 < count; i += 3) {
++        const a = points[indices ? indices.getX(i) : i];
++        const b = points[indices ? indices.getX(i + 1) : i + 1];
++        const c = points[indices ? indices.getX(i + 2) : i + 2];
++        points.push(a.clone().lerp(b, 0.5), b.clone().lerp(c, 0.5), c.clone().lerp(a, 0.5));
++      }
++    }
++    samples.push({ mesh, points });
++  });
++
++  const modelView = new Matrix4();
++  const point = new Vector3();
++  const correction = new Vector3();
++  const cameraUp = new Vector3();
++
++  return (camera, target) => {
++    if (!samples.length) return false;
++    camera.updateMatrixWorld();
++    model.updateWorldMatrix(true, true);
++    const slopeY = visibleInset / camera.projectionMatrix.elements[5];
++    const slopeX = visibleInset / camera.projectionMatrix.elements[0];
++    let shortest = Infinity;
++    let shiftX = 0;
++    let shiftY = 0;
++    for (const { mesh, points } of samples) {
++      modelView.multiplyMatrices(camera.matrixWorldInverse, mesh.matrixWorld);
++      for (const sample of points) {
++        point.copy(sample).applyMatrix4(modelView);
++        const depth = -point.z;
++        if (depth <= camera.near || depth >= camera.far) continue;
++        const edgeX = slopeX * depth;
++        const edgeY = slopeY * depth;
++        const x = point.x - MathUtils.clamp(point.x, -edgeX, edgeX);
++        const y = point.y - MathUtils.clamp(point.y, -edgeY, edgeY);
++        const distance = x * x + y * y;
++        if (distance === 0) return false;
++        if (distance < shortest) {
++          shortest = distance;
++          shiftX = x;
++          shiftY = y;
++        }
++      }
++    }
++
++    // Move camera and target together so the limit preserves orbit and zoom.
++    if (shortest < Infinity) {
++      correction.setFromMatrixColumn(camera.matrixWorld, 0).multiplyScalar(shiftX);
++      cameraUp.setFromMatrixColumn(camera.matrixWorld, 1);
++      correction.addScaledVector(cameraUp, shiftY);
++    } else {
++      correction.subVectors(center, target);
++    }
++    target.add(correction);
++    camera.position.add(correction);
++    camera.updateMatrixWorld();
++    return true;
++  };
++}
+diff --git a/src/main.js b/src/main.js
+index 3b47f79..04d9a77 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -18,2 +18,3 @@ const icons = {
+   hand: '<path d="M9 13V6a1.5 1.5 0 0 1 3 0v5-1a1.5 1.5 0 0 1 3 0v2-1a1.5 1.5 0 0 1 3 0v2a1.5 1.5 0 0 1 3 0v3a5 5 0 0 1-5 5h-3a4 4 0 0 1-3-1l-5-5a1.7 1.7 0 0 1 2-2l2 1"/>',
++  pan: '<path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3"/>',
+   zoom: '<circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 5.5 5.5M7.5 10h5m-2.5-2.5v5"/>',
+@@ -183,2 +184,3 @@ function lessonPage(lesson, version, focusHeading) {
+           <div class="stage-actions">
++            <button type="button" data-action="pan" class="icon-button" aria-label="Pan mode" aria-pressed="false" title="Pan mode · drag to move the model" disabled>${icon('pan')}</button>
+             <button type="button" data-action="reset" class="icon-button" aria-label="Reset view" title="Reset view">${icon('reset')}</button>
+@@ -199,3 +201,3 @@ function lessonPage(lesson, version, focusHeading) {
+     </section>
+-    <div class="gesture-row"><span>${icon('hand', 17)} Drag to rotate</span><span>${icon('zoom', 17)} Scroll or pinch to zoom</span><span>${icon('cube', 17)} <span class="tap-hint">Tap a part to explore</span></span></div>
++    <div class="gesture-row"><span>${icon('hand', 17)} Drag to rotate</span><span>${icon('pan', 17)} Pan mode, right-drag or two fingers</span><span>${icon('zoom', 17)} Scroll or pinch to zoom</span><span>${icon('cube', 17)} <span class="tap-hint">Tap a part to explore</span></span></div>
+   </main>`;
+@@ -211,2 +213,3 @@ function lessonPage(lesson, version, focusHeading) {
+   const reset = stage.querySelector('[data-action="reset"]');
++  const pan = stage.querySelector('[data-action="pan"]');
+   let selected = -1;
+@@ -246,3 +249,3 @@ function lessonPage(lesson, version, focusHeading) {
+     }
+-    reset.disabled = !available;
++    pan.disabled = reset.disabled = !available;
+     if (loadFailed) full.hidden = true;
+@@ -281,2 +284,8 @@ function lessonPage(lesson, version, focusHeading) {
+       case 'assembly': back(event.detail === 0); break;
++      case 'pan': {
++        const enabled = pan.getAttribute('aria-pressed') !== 'true';
++        pan.setAttribute('aria-pressed', String(enabled));
++        viewer?.setPanMode(enabled);
++        break;
++      }
+       case 'reset': viewer?.resetView(); break;
+diff --git a/src/style.css b/src/style.css
+index a216947..8d11049 100644
+--- a/src/style.css
++++ b/src/style.css
+@@ -103,2 +103,3 @@ html:fullscreen { overflow-y: auto; background: #100b22; }
+ .icon-button { border-radius: 9px; width: 42px; height: 42px; display: grid; place-items: center; background: #2c2044; border: 1px solid #4e3c68; color: #e6d6ff; padding: 0; }
++.icon-button[data-action="pan"][aria-pressed="true"]:not(:disabled) { color: #201531; background: #dac2ff; border-color: #dac2ff; }
+ .icon-button:hover:not(:disabled) { background: #44315d; }
+diff --git a/src/viewer.js b/src/viewer.js
+index ca0693b..bd7afcc 100644
+--- a/src/viewer.js
++++ b/src/viewer.js
+@@ -7,2 +7,3 @@ import { telephone } from './models/telephone.js';
+ import { SoftwareRenderer } from './software-renderer.js';
++import { createPanLimit } from './camera-pan.js';
+ 
+@@ -106,3 +107,3 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+   canvas.tabIndex = 0;
+-  canvas.setAttribute('aria-label', '3D model. Drag or use arrow keys to rotate, scroll or press plus and minus to zoom. Use the part buttons to select a part.');
++  canvas.setAttribute('aria-label', '3D model. Drag or use arrow keys to rotate. Right-drag, use two fingers, or press Shift and an arrow key to pan. Scroll, pinch, or press plus or minus to zoom.');
+   renderer.setPixelRatio?.(Math.min(window.devicePixelRatio || 1, 1.75));
+@@ -114,3 +115,4 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+   controls.enableDamping = true;
+-  controls.enablePan = false;
++  controls.enablePan = true;
++  controls.screenSpacePanning = true;
+   controls.rotateSpeed = 0.69;
+@@ -124,3 +126,7 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+   let needsRender = true;
+-  controls.addEventListener('change', () => { needsRender = true; });
++  let panLimit;
++  controls.addEventListener('change', () => {
++    if (!transition) panLimit?.(camera, controls.target);
++    needsRender = true;
++  });
+   let raf;
+@@ -153,2 +159,4 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+     controls.maxDistance = frameDistance * 2.7;
++    panLimit = createPanLimit(activeObject);
++    panLimit(camera, controls.target);
+     controls.update();
+@@ -237,2 +245,5 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+     if (transition) finishTransition();
++    controls.enableDamping = false;
++    controls.update();
++    controls.enableDamping = true;
+     applyPose(fittedPose());
+@@ -253,3 +264,11 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+       } else moveTo(fittedPose());
+-    } else fit();
++    } else {
++      const pose = fittedPose();
++      if (frameDistance) {
++        const offset = camera.position.clone().sub(controls.target);
++        pose.target = controls.target.clone();
++        pose.position = pose.target.clone().addScaledVector(offset, pose.frameDistance / frameDistance);
++      }
++      applyPose(pose);
++    }
+   }
+@@ -300,3 +319,3 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+     activePointers.add(event.pointerId);
+-    if (activePointers.size !== 1 || event.button !== 0) {
++    if (activePointers.size !== 1 || event.button !== 0 || event.shiftKey || event.ctrlKey || event.metaKey) {
+       pointer = null;
+@@ -337,2 +356,14 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+     const direction = v().subVectors(camera.position, controls.target);
++    const key = event.key;
++    if (event.shiftKey && key.startsWith('Arrow')) {
++      const axis = key === 'ArrowLeft' || key === 'ArrowRight' ? 0 : 1;
++      const sign = key === 'ArrowLeft' || key === 'ArrowDown' ? 1 : -1;
++      const offset = v().setFromMatrixColumn(camera.matrixWorld, axis)
++        .multiplyScalar(sign * direction.length() * 0.07);
++      controls.target.add(offset);
++      camera.position.add(offset);
++      controls.update();
++      event.preventDefault();
++      return;
++    }
+     const rotation = new T.Spherical().setFromVector3(direction);
+@@ -402,2 +433,6 @@ export function createViewer(host, lesson, { onSelect, onBack, onStage, autoPlay
+     setPlaying(value) { playing = value; },
++    setPanMode(enabled) {
++      controls.mouseButtons.LEFT = enabled ? T.MOUSE.PAN : T.MOUSE.ROTATE;
++      controls.touches.ONE = enabled ? T.TOUCH.PAN : T.TOUCH.ROTATE;
++    },
+     resetView: fit,
+diff --git a/tests/camera-pan.test.js b/tests/camera-pan.test.js
+new file mode 100644
+index 0000000..0882815
+--- /dev/null
++++ b/tests/camera-pan.test.js
+@@ -0,0 +1,62 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import { BoxGeometry, Group, Mesh, PerspectiveCamera, Vector3 } from 'three';
++import { createPanLimit } from '../src/camera-pan.js';
++
++function createScene(aspect = 1.6) {
++  const model = new Group();
++  const mesh = new Mesh(new BoxGeometry(0.3, 6, 0.2));
++  model.add(mesh);
++  const camera = new PerspectiveCamera(37, aspect, 0.01, 100);
++  camera.position.z = 2;
++  const target = new Vector3();
++  camera.lookAt(target);
++  return { camera, target, mesh, limit: createPanLimit(model) };
++}
++
++function move(camera, target, x, y) {
++  const offset = new Vector3(x, y, 0);
++  camera.position.add(offset);
++  target.add(offset);
++}
++
++function hasVisibleVertex(mesh, camera) {
++  const positions = mesh.geometry.attributes.position;
++  for (let i = 0; i < positions.count; i++) {
++    const point = new Vector3().fromBufferAttribute(positions, i).project(camera);
++    if (Math.abs(point.x) < 0.8 && Math.abs(point.y) < 0.8 && Math.abs(point.z) < 1) return true;
++  }
++  return false;
++}
++
++test('can pan a zoomed-in model to both ends without changing zoom or angle', () => {
++  const { camera, target, limit } = createScene();
++  const orbit = camera.position.clone().sub(target);
++  for (const direction of [0, 1, -1]) {
++    target.set(0, 0, 0);
++    camera.position.copy(orbit);
++    move(camera, target, 0, direction * 3);
++    assert.equal(limit(camera, target), false);
++    assert.equal(target.y, direction * 3);
++    assert.deepEqual(camera.position.clone().sub(target), orbit);
++  }
++});
++
++test('keeps real geometry on screen after diagonal over-panning at either aspect', () => {
++  for (const aspect of [0.58, 2.25]) {
++    const { camera, target, mesh, limit } = createScene(aspect);
++    move(camera, target, 10, 11);
++    assert.equal(limit(camera, target), true);
++    assert.ok(hasVisibleVertex(mesh, camera));
++    assert.deepEqual(camera.position.clone().sub(target), new Vector3(0, 0, 2));
++  }
++});
++
++test('recenters if an orbit leaves the model behind the camera', () => {
++  const { camera, target, limit } = createScene();
++  target.z = -4;
++  camera.position.z = -2;
++  assert.equal(limit(camera, target), true);
++  assert.equal(target.length(), 0);
++  assert.deepEqual(camera.position, new Vector3(0, 0, 2));
++});
+-- 
+2.52.0
+
