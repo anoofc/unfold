@@ -1,5 +1,7 @@
 import './style.css';
 import { lessons } from './lessons.js';
+import { createNarrationPlayer } from './narration.js';
+import { mountNarration } from './narration-ui.js';
 
 const icons = {
   star: '<path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/>',
@@ -24,6 +26,8 @@ const icons = {
 const icon = (name, size = 20) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${icons[name]}</svg>`;
 const app = document.querySelector('#app');
 const base = import.meta.env.BASE_URL;
+const narration = createNarrationPlayer({ baseUrl: base });
+let unmountNarration;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let viewer;
 let routeVersion = 0;
@@ -189,7 +193,7 @@ function lessonPage(lesson, version, focusHeading) {
           <button type="button" data-action="previous" class="icon-button part-arrow previous" aria-label="Previous part" hidden>${icon('left')}</button>
           <button type="button" data-action="next" class="icon-button part-arrow next" aria-label="Next part" hidden>${icon('right')}</button>
         </div>
-        <div class="stage-bottom"></div>
+        <div class="stage-footer"><div class="stage-bottom"></div>${narration.hasLesson(lesson.id) ? '<div class="narration-host"></div>' : ''}</div>
       </div>
     </section>
     <div class="gesture-row"><span>${icon('hand', 17)} Drag to rotate</span><span>${icon('zoom', 17)} Scroll or pinch to zoom</span><span>${icon('cube', 17)} <span class="tap-hint">Tap a part to explore</span></span></div>
@@ -209,6 +213,11 @@ function lessonPage(lesson, version, focusHeading) {
   let playing = !reducedMotion.matches;
   let available = false;
   let loadFailed = false;
+
+  if (narration.hasLesson(lesson.id)) {
+    unmountNarration = mountNarration(stage.querySelector('.narration-host'), narration);
+    narration.setContext(lesson.id);
+  }
 
   function updateStage() {
     const preview = stageBottom.querySelector('.demo-caption');
@@ -243,12 +252,14 @@ function lessonPage(lesson, version, focusHeading) {
     if (available && !viewer.isolate(id, clickedObject)) return;
     selected = index;
     updateInfo();
+    narration.setContext(lesson.id, id);
   }
   function back(focusPlay = false) {
     if (selected < 0) return;
     selected = -1;
     viewer?.showAssembly();
     updateInfo();
+    narration.setContext(lesson.id, 'assembly', { autoplay: false });
     if (focusPlay) stage.querySelector('.play-button')?.focus();
   }
   function movePart(offset) {
@@ -313,6 +324,9 @@ function lessonPage(lesson, version, focusHeading) {
 
 function render(focusHeading = false) {
   const version = ++routeVersion;
+  unmountNarration?.();
+  unmountNarration = null;
+  narration.leave();
   viewer?.destroy();
   viewer = null;
   const route = /^#lesson\/([a-z]+)$/.exec(location.hash);
@@ -338,5 +352,7 @@ app.addEventListener('click', async event => {
   }
 });
 document.addEventListener('fullscreenchange', updateFullscreenControls);
+window.addEventListener('pagehide', () => narration.leave());
+window.addEventListener('pageshow', event => { if (event.persisted) render(); });
 window.addEventListener('hashchange', () => render(true));
 render();

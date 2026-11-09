@@ -1,0 +1,225 @@
+{
+  "generator": "hyperframes@0.9.26",
+  "voice": {
+    "model": "Kokoro-82M v1.0",
+    "id": "af_heart",
+    "language": "en-us",
+    "speed": 0.93,
+    "revision": "heart-v1"
+  },
+  "encoding": {
+    "codec": "AAC",
+    "sampleRate": 44100,
+    "bitrate": 96000
+  },
+  "clips": [
+    {
+      "lessonId": "engine",
+      "contextId": "assembly",
+      "src": "audio/engine/assembly-heart-v1.m4a",
+      "durationSeconds": 22.805,
+      "transcriptSha256": "28230548cef031430f5fc7c5fa5f4926f09a6fcc0fb1367198a116ac9b6ea9fd",
+      "audioSha256": "581667b5a0f1eba5df2bbe888b29d552f1b9ba238249fc403619615719b8792d"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "piston",
+      "src": "audio/engine/piston-heart-v1.m4a",
+      "durationSeconds": 14.741,
+      "transcriptSha256": "3407398d2a1b9c79ec805f475ac9f1950bde95af1a39602d77ceda435a0245c0",
+      "audioSha256": "f5c763abc717d8745d98cc82e26c19fa41b42697bef0d722d19ea10991434af7"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "rod",
+      "src": "audio/engine/rod-heart-v1.m4a",
+      "durationSeconds": 12.907,
+      "transcriptSha256": "f6bf37e3c1fec66d260a3e54e97675768c1e652d44b9b15ef54187725ad7d530",
+      "audioSha256": "195bd2d5f15ace62d007a830813d936961e3b14c698f62dbea45d0b8ba0db102"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "crank",
+      "src": "audio/engine/crank-heart-v1.m4a",
+      "durationSeconds": 13.227,
+      "transcriptSha256": "65f1e229dbce74d5a0ad1448aa2e9bbd983f6cade532805a228509672b280082",
+      "audioSha256": "2a98aa62ae56d3b245e2b43f3a494a06fe3c71c83c82529068822b3a46f822a9"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "intake",
+      "src": "audio/engine/intake-heart-v1.m4a",
+      "durationSeconds": 14.848,
+      "transcriptSha256": "ced44309b097cb791a27941ea68451933569ac191095a84e5b46ff4b1a6939a8",
+      "audioSha256": "72ed7c1994dabe197eab1af9c8c4504ab8fdae6eb461bcc5eb8b2db4b3da7093"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "exhaust",
+      "src": "audio/engine/exhaust-heart-v1.m4a",
+      "durationSeconds": 14.592,
+      "transcriptSha256": "951ad56aaec8929966d1180fb9bcd9c4a55b93de70c59d78cba13a274c25f7a0",
+      "audioSha256": "fa0b298acc280ef1e15a4d254a461067efe9c7c9d9c353c7f881aa56b377ef98"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "plug",
+      "src": "audio/engine/plug-heart-v1.m4a",
+      "durationSeconds": 14.805,
+      "transcriptSha256": "cfa35206939e065f2deb0b94eda53aec1001976b30054366c23a56f105c47b7c",
+      "audioSha256": "d7fd27820497393ab23c257b25255488068743444b6e50bb383b75815a0dfde2"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "cam",
+      "src": "audio/engine/cam-heart-v1.m4a",
+      "durationSeconds": 13.035,
+      "transcriptSha256": "522362ba2bd9a93dfaea73337e8226be5be2d47745f796218473352d93e54ec7",
+      "audioSha256": "846f0699a6e1ca6282e1995985901d9bcd447f6715b27d4b58fe63d5771f8d8f"
+    },
+    {
+      "lessonId": "engine",
+      "contextId": "block",
+      "src": "audio/engine/block-heart-v1.m4a",
+      "durationSeconds": 12.885,
+      "transcriptSha256": "be09f8b6e44107ffe10b20a3daf9f31993c4c771a8fe926f1ce82c2809358d96",
+      "audioSha256": "fab4db78a9fd0084da2922a46f4cfcbe72494fa64ac3bc2dc89bea3795b8adfa"
+    },
+    {
+      "lessonId": "earth",
+      "contextId": "assembly",
+      "src": "audio/earth/assembly-heart-v1.m4a",
+      "durationSeconds": 22.72,
+      "transcriptSha256": "4d388eff6dccb742e1f6dc93db629f1e8c86ebb4fe48ea52aaf24387b7f71f8e",
+      "audioSha256": "afbbfb5669c334e08a4a7d43a3d3465a180b88d192c67812ffe726ed5a365b58"
+    },
+    {
+      "lessonId": "earth",
+      "contextId": "crust",
+      "src": "audio/earth/crust-heart-v1.m4a",
+      "durationSeconds": 13.227,
+      "transcriptSha256": "18d66fc8474c36b33ee1029050975550fb4203d1af2c478a49772ef6721bc088",
+      "audioSha256": "fb153447ad517fbb685871f0216c134c9aaefaa51fea0da0569552da08b1ce13"
+    },
+    {
+      "lessonId": "earth",
+      "contextId": "mantle",
+      "src": "audio/earth/mantle-heart-v1.m4a",
+      "durationSeconds": 14.187,
+      "transcriptSha256": "a950bea870948f27d5d9d0f85092c183ff12dc5d7de2cf8c198c0e04ea98d9b7",
+      "audioSha256": "f17d50f5bcd16d82857dab15396d01754a83872f44c3e28ceb7fcf1ab904c41b"
+    },
+    {
+      "lessonId": "earth",
+      "contextId": "outer",
+      "src": "audio/earth/outer-heart-v1.m4a",
+      "durationSeconds": 15.936,
+      "transcriptSha256": "d5aef30d73a60bca7f2b0fd36e6a9661166cc031bef094f7482b4c0726b44fcb",
+      "audioSha256": "4e3a989d03b9cba681ec06acc18cb22f4b756812d378b4655e04da62a21429fb"
+    },
+    {
+      "lessonId": "earth",
+      "contextId": "inner",
+      "src": "audio/earth/inner-heart-v1.m4a",
+      "durationSeconds": 13.333,
+      "transcriptSha256": "314e561933613522518f06c72ea046dc69e81cd2fc779f09832d0941e68eb4c6",
+      "audioSha256": "50b63352bc54e252be3749302157e4d7c57911d95ae8e24ab1c1a8ac3f406243"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "assembly",
+      "src": "audio/telephone/assembly-heart-v1.m4a",
+      "durationSeconds": 25.387,
+      "transcriptSha256": "42552c5499ffa9311aaab1043969f4c5648deb722a72e6d3281b30381c44c32e",
+      "audioSha256": "6cf5ec4f6c6bdd24b8891c19816ea838d78407f29f3e673af0f824bfd79f5e13"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "mouth",
+      "src": "audio/telephone/mouth-heart-v1.m4a",
+      "durationSeconds": 14.4,
+      "transcriptSha256": "2cb428ea901ef85495a7a9a5f9d5e10b064654cf87bc3f102727dc88ac5918fc",
+      "audioSha256": "63b4b2f7a98e5b9d7ecf91171f1c24f834bd2a2fb47421a2cbfe66ec386b6f53"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "diaphragm",
+      "src": "audio/telephone/diaphragm-heart-v1.m4a",
+      "durationSeconds": 15.36,
+      "transcriptSha256": "35814e7be7c0a27f47287ae3265f2989ba3cef1fd0374f59a70279b5d0b25133",
+      "audioSha256": "85cd829586d6921bc8367f0942ea1c24418cac73eecd342a7656de5b8f0769b6"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "coil",
+      "src": "audio/telephone/coil-heart-v1.m4a",
+      "durationSeconds": 15.637,
+      "transcriptSha256": "77d950deaf1d590a7ce08a0dd89e21fb2b65f3396339b456803998eb92d15f0f",
+      "audioSha256": "3f4269014408bffa09cf2ee2b1fb52ac97524f01895ccab386edeb800e563518"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "wire",
+      "src": "audio/telephone/wire-heart-v1.m4a",
+      "durationSeconds": 14.955,
+      "transcriptSha256": "50dc1152fe80255daa16d1ab9b38ac3cca35c14a4b73ff2baf8795e3fe311158",
+      "audioSha256": "1288817bc17fae56157da1e3a591cfbab764f81302d3fecf3bd43491111caee6"
+    },
+    {
+      "lessonId": "telephone",
+      "contextId": "base",
+      "src": "audio/telephone/base-heart-v1.m4a",
+      "durationSeconds": 14.869,
+      "transcriptSha256": "5d22505623c8f2b4307145569bbd0f77ef9ab95379968f4021df939199a1d758",
+      "audioSha256": "359d6ae5bf8d0c91243d8f9718a59002e7856dce293b846193ac22a5a6ead95a"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "assembly",
+      "src": "audio/body/assembly-heart-v1.m4a",
+      "durationSeconds": 22.805,
+      "transcriptSha256": "24e429ae72cc23b0ea52a3b7f3a498471174c9bf6adf3e1bae769656b2af3a39",
+      "audioSha256": "032d229d8948d9a6e625a3cb266589768ef8e2cafb29fd2379bb1a69bd634cde"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "brain",
+      "src": "audio/body/brain-heart-v1.m4a",
+      "durationSeconds": 14.677,
+      "transcriptSha256": "65f9ad531b790dc6ef7dfb23cf39ea9e3721699e130a40bd2232a52877a86138",
+      "audioSha256": "f8f202ea097cca9402065c1c10ee71f5c47ca63a9a2e5e6f684e984465257465"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "lungs",
+      "src": "audio/body/lungs-heart-v1.m4a",
+      "durationSeconds": 14.101,
+      "transcriptSha256": "2c422f840229850aac5efbea3568f0b6c2bf6b7ca6090db4668964094d77ac98",
+      "audioSha256": "8698d6675d901e4d2e399899991d9da8e781eb3272657ea5b81c7cc7e5dcfaf1"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "heart",
+      "src": "audio/body/heart-heart-v1.m4a",
+      "durationSeconds": 15.04,
+      "transcriptSha256": "8cc4e7b71b004d066c2131e2936921c4c22d14fd190f5092d74ac55e79b1dccb",
+      "audioSha256": "4fd4bd9a3e059e38910f53775cd3e6ea77a19baba34316c6aea1b3cc2e0768bc"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "skeleton",
+      "src": "audio/body/skeleton-heart-v1.m4a",
+      "durationSeconds": 16.405,
+      "transcriptSha256": "e47aff3f48a51ab9c8804a3a8c34c7eea6e02dc85d0c9e423252e8d7d259fda4",
+      "audioSha256": "b810017ef0fbbb19a30046f2a05d8afd2e3f9f042cae5b3e43fb1eea1ae3e187"
+    },
+    {
+      "lessonId": "body",
+      "contextId": "vessels",
+      "src": "audio/body/vessels-heart-v1.m4a",
+      "durationSeconds": 16.107,
+      "transcriptSha256": "dd421221d43aacb96654b6eb0d0df3b848f20b0a26c5883d7676314201cb16a2",
+      "audioSha256": "7636dc9d2dd744925149079f7064db242d7406aef74b66e16ab198b63804e625"
+    }
+  ]
+}

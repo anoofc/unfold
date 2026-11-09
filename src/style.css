@@ -123,9 +123,25 @@ html:fullscreen { overflow-y: auto; background: #100b22; }
 .return-button { min-height: 43px; padding: 0 12px; display: flex; align-items: center; gap: 7px; border: 0; border-radius: 9px; color: #221431; background: #dac2ff; font-size: 14px; font-weight: 750; }
 .return-button:hover { background: #f0e1ff; }
 .empty-hint { color: #cbbedc; font-size: 12px; }
+.stage-footer { min-width: 0; }
+.narration { padding: 12px 14px; border-top: 1px solid #493861; background: #1b132de0; }
+.narration-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px 12px; margin-bottom: 8px; }
+.narration-heading h2 { font-size: 14px; }
+.narration-clip-title { color: var(--accent); font-size: 12px; }
+.narration-voice-note { margin-left: auto; color: #b5a6c9; font-size: 10px; }
+.narration-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+.narration-controls button { min-height: 38px; padding: 7px 12px; border: 1px solid #66517f; border-radius: 8px; background: #302143; font-size: 13px; font-weight: 650; }
+.narration-controls button:hover:not(:disabled) { background: #44315d; }
+.narration-controls [data-narration="start"] { background: #dac2ff; color: #221431; }
+.narration-choice > p { font-size: 13px; margin-bottom: 8px; }
+.narration-status { margin-top: 8px; color: #ccbcde; font-size: 12px; line-height: 1.4; }
+.narration-transcript { margin-top: 8px; font-size: 12px; line-height: 1.5; }
+.narration-transcript summary { cursor: pointer; color: #eadcfb; font-weight: 650; }
+.narration-transcript p { margin-top: 5px; color: #d0c4e0; }
 .stage:is(:fullscreen, .is-expanded) { border: 0; border-radius: 0; width: 100%; height: 100%; grid-template-rows: auto minmax(0, 1fr) auto; }
 .stage.is-expanded { position: fixed; inset: 0; z-index: 1000; }
 .stage:is(:fullscreen, .is-expanded) .stage-center { min-height: 0; }
+.stage:is(:fullscreen, .is-expanded) .stage-footer { max-height: 45vh; overflow-y: auto; }
 .gesture-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 22px; color: #c4b7d5; font-size: 12px; padding-top: 15px; }
 .gesture-row > span { display: inline-flex; align-items: center; gap: 6px; }
 
